@@ -44,7 +44,13 @@ async def cua_task(
     if not payload or not payload.get("task"):
         raise ValueError("task is required")
 
-    kernel_browser = client.browsers.create(invocation_id=ctx.invocation_id, stealth=True)
+    print(f"DEBUG: ctx.invocation_id = {ctx.invocation_id}")
+    print(f"DEBUG: ctx.invocation_id type = {type(ctx.invocation_id)}")
+    print(f"DEBUG: ctx.invocation_id repr = {repr(ctx.invocation_id)}")
+
+    kernel_browser = await asyncio.to_thread(
+    	client.browsers.create, invocation_id=ctx.invocation_id, stealth=True
+    )
 
     print("Kernel browser live view url: ", kernel_browser.browser_live_view_url)
     cdp_ws_url = kernel_browser.cdp_ws_url
